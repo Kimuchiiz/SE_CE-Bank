@@ -1,0 +1,228 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <title>Account</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+
+    <style>
+
+        body{
+            margin-top: 5rem;
+            background-color: rgb(172, 170, 169);
+
+        }
+
+        h1{
+            color:green;
+        }   
+        
+        .back{
+            width: 50px;
+            height: 30px;
+            background-image: url("leftArrow2.png");
+            background-size: 50px 30px;
+        }
+        
+        .account{
+            margin-top: 50px;
+            margin-left: 90px;
+        }
+   
+        #acc1{
+          border-radius: 100%;
+          margin-left: 150px;
+          margin-top: 50px;
+          position:absolute;
+        }
+
+        #acc2{
+          border-radius: 3%;
+          margin-left: 950px;
+          margin-top: 50px;
+          position:absolute;
+
+        }
+
+        div.rightArrow2{
+          width: 125px;
+          height: 100px;
+          background-image: url("rightArrow2.png");
+          background-size: 125px 100px;
+          margin-left: 685px;
+          margin-top: 200px;
+          position:absolute;
+        }
+
+        #nextBtn{
+          margin-left: 1315px;
+          margin-top: 510px;
+          position: absolute;
+        }
+
+        .insertIMG{
+
+        }
+        .addIMG{
+        
+            margin-top:70px;
+        }           
+
+        p{
+            font-family:'Lucida Sans Unicode';
+            font-size: 20px;
+            text-align: center;
+        }
+
+        .accNO{
+            margin-top: 60px;
+        }
+
+        .reg{
+            width: 250px;
+            height: 250px;
+            background-color: rgb(212, 212, 212);
+            border-radius: 30px;
+            margin-left: auto;
+            margin-right: auto;
+            margin-top: 30px;
+
+        }
+
+        h4{
+            margin-top:-90px;
+            color:white;
+        }
+
+        h6{
+            margin-top:80px;
+            overflow:hidden;
+            white-space: nowrap;
+            text-overflow:ellipsis;
+            width: 80%;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+
+    </style>
+
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-sm bg-dark navbar-dark fixed-top ">
+        <a class="navbar-brand" href="\">
+            <img src="{% static 'ceBank.png' %}" alt="logo" style="width:45px;">
+        </a>
+        <ul class="navbar-nav ">
+            <li class="nav-item">
+                <a class="nav-link" href="\bankaccount\{{bankaccount_id}}\favorite">Transfer</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="\bankaccount\{{bankaccount_id}}\history">Transaction
+                    history</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link " href="\account" style="margin-left:1040px">Account</a>
+            </li>
+
+        </ul>
+        <a href="\logout" class="btn btn-outline-success btn-md ml-auto " id="okBtn">LOG OUT</a>
+    </nav>
+
+
+    <div class="bankaccounts-container container-fluid">
+        <h1> Choose a favorite account</h1>
+        <!-- FavoriteBankAccounts -->
+
+
+        <div class="row text-center" style="display:flex; flex-wrap: wrap;">
+            {% for favorite in all_favorites %}
+
+
+            <div class="col-sm-3 ">
+                <div class="thumbnail">
+                    <div class="reg">
+                        <br>
+                        <img src="{% static 'account.png' %}" alt="logo" style="width:180px; height: 120px;">
+                        <div class="caption">
+                            <h4>{{ favorite.favbankaccount.number }}</h4>
+                            <h6>{{ favorite.name }}</h6>
+
+
+                            <!-- View Details -->
+                            <a href="\bankaccount\{{bankaccount_id}}\transfer\{{favorite.favbankaccount.id}}" class="btn btn-success btn-sm"
+                                role="button">Select</a>
+
+                            <!-- Delete BankAccount -->
+                            <form action="{% url 'bank:favorite-delete' bankaccount_id favorite.id %}" method="post"
+                                style="display: inline;">
+                                {% csrf_token %}
+                                <input type="hidden" name="bankaccount_id" value="{{ bankaccount.id }}" />
+                                <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#exampleModal">
+                                    <img src="{% static 'delete.png' %}" style="width:15px; height: 20px;">
+                                </button>
+                                <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+                                    aria-hidden="true">
+                                    <div class="modal-dialog" role="document">
+                                        <div class="modal-content" style="width:70%; margin-left:21%;">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="exampleModalLabel">Confirm?</h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                Are you sure to delete this bank account?
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                                                <button type="submit" class="btn btn-danger">Delete</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+
+
+                </div>
+            </div>
+            {% cycle '' '' '' '' '' '<div class="clearfix visible-lg"></div>' %}
+            {% endfor %}
+
+            <div class="col-sm-3 ">
+                <div class="reg">
+                    <a href="\bankaccount\{{bankaccount_id}}\favorite\add">
+                        <button type="button" class="btn btn-success " style="margin-top:105px; border-radius:100%;">
+                            <img src="{% static 'plus.png' %}" style="width:20px; height: 20px; ">
+                        </button>
+                    </a>
+                </div>
+            </div>
+
+            <div class="col-sm-3 ">
+                <div class="reg">
+                    <a href="\bankaccount\{{bankaccount_id}}\transfer\">
+                        <button type="button" class="btn btn-light " style="margin-top:95px; border-radius:100%;">
+                            <img src="{% static 'rightArrow2.png' %}" style="width:40px; height: 40px; ">
+                        </button>
+                    </a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    </div>
+</body>
+
+</html>

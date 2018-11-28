@@ -1,0 +1,259 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <title>Bootstrap Example</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            $('[data-toggle="tooltip"]').tooltip();
+        });
+
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            $('#pinModal').on('hidden', function () {
+                clear()
+            });
+        });
+    </script>
+    <style>
+
+        body{
+            margin-top: 5rem;
+            background-color: rgb(172, 170, 169);
+
+        }
+
+        h1{
+            text-align: center;
+            color:green;
+        }   
+        
+        .back{
+            width: 50px;
+            height: 30px;
+            background-image: url("leftArrow2.png");
+            background-size: 50px 30px;
+        }
+        
+        div.account{
+          width:425px;
+          height:425px;
+          background-color:white;
+          
+        }
+
+        #acc1{
+          border-radius: 100%;
+          margin-left: 150px;
+          margin-top: 50px;
+          position:absolute;
+        }
+
+        #acc2{
+          border-radius: 100%;
+          margin-left: 950px;
+          margin-top: 50px;
+          position:absolute;
+
+        }
+
+        div.rightArrow2{
+          width: 125px;
+          height: 100px;
+          background-image: url("{% static 'rightArrow2.png' %}");
+          background-size: 125px 100px;
+          margin-left: 685px;
+          margin-top: 200px;
+          position:absolute;
+        }
+
+        #confirmBtn{
+          margin-left: 1290px;
+          margin-top: 64px;
+          position:absolute;
+        }
+
+        .insertIMG{
+            margin-left: 160px;
+            margin-top: 80px;
+
+        }
+
+        p{
+            font-family:'Lucida Sans Unicode';
+            font-size: 20px;
+            text-align: center;
+            margin-bottom: 6px;
+        }
+        
+        p.transAmount{
+            margin-top: 350px;
+        }
+        p.transAmount,.Amount{
+            font-size: 24px;
+            color: green;
+            
+        }
+
+        .accNO{
+            margin-top: 60px;
+        }
+
+        #pinModal{
+            margin-top:100px;
+
+        }
+
+        .insertpin{
+            margin-left:auto;
+            margin-right:auto;
+            margin-top:auto;
+            margin-bottom:auto;
+            width:60px;
+            height:60px;
+            border-radius:3%;
+            border:1px solid grey;
+        }
+
+        .numBtn{
+            width:60px;
+            height: 60px;
+            margin-top:30px;
+        }
+
+        .row1Btn{
+            margin-left:60px;
+        }
+        .row2Btn{
+            margin-left:30px;
+        }
+        .row3Btn{
+            margin-right:30px;
+        }
+        
+        #amountInput{
+            margin-left:auto;
+            margin-right:auto;
+            margin-top:25%;
+        }
+
+        #nextBtn{
+            margin-left:48%;
+            
+        }
+
+        #ihelp{
+            position: absolute;
+            left: 60%;
+            top:69%;
+        }
+            
+          .tooltip-inner {
+    max-width: 303px;
+    /* If max-width does not work, try using width instead */
+     
+}
+    </style>
+
+</head>
+
+
+<body>
+    <nav class="navbar navbar-expand-sm bg-dark navbar-dark fixed-top ">
+        <a class="navbar-brand" href="\">
+            <img src="{% static 'ceBank.png' %}" alt="logo" style="width:45px;">
+        </a>
+        <ul class="navbar-nav ">
+
+            <li class="nav-item">
+                <a class="nav-link" href="\bankaccount\{{bankaccount_id}}\favorite">Transfer</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="\bankaccount\{{bankaccount_id}}\history">Transaction
+                    history</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link " href="\account" style="margin-left:1040px">Account</a>
+            </li>
+        </ul>
+        <a href="\logout" class="btn btn-outline-success btn-md ml-auto " id="okBtn">LOG OUT</a>
+    </nav>
+
+
+    <div class="container-fluid">
+        <h1> Transfer</h1>
+
+        <div class="account" id="acc1">
+            <div class="insertIMG"><img src="{% static 'account.png' %}" width="110" height="85"></div>
+            <p class=accNO>No. {{bankaccount.number}}</p>
+            <p>{{bankaccount.firstname}} {{bankaccount.surname}}</p>
+            <p>{{bankaccount.balance}} THB</p>
+        </div>
+        <div class="rightArrow2"></div>
+
+        <div class="account" id="acc2">
+            <div class="insertIMG"><img src="{% static 'account.png' %}" width="110" height="85"></div>
+            <p class=accNO>No. {{tobankaccount.number}}</p>
+            <p>{{tobankaccount.firstname}} {{tobankaccount.surname}}</p>
+        </div>
+
+        <div class="container-fluid">
+            <form name="form" id="form" role="form" action="" method="post">
+                {% csrf_token %}
+                <a id="ihelp" data-toggle="tooltip" title="Amount must be 0-9 and more than 0.
+                    Amount can have up to 2 decimal places."><img
+                        src="{% static 'i.png' %}" style="width:20px; height:20px;"></a>
+                <div class="form-group">
+
+                    <input type="text" class="form-control text-center" pattern="[0-9]+(.[0-9]{1,2})?" id="amountInput"
+                        placeholder="Amount" name="amount" style="width:20%; " required>
+
+                    <br>
+                    {% if error_message %}
+                    <p style="color:red;"><strong>{{error_message}}</strong></p>
+                    {% endif %}
+                </div>
+
+                <br>
+                <button type="submit" class="btn btn-success btn-md" data-toggle="modal" data-target="#pinModal" id="nextBtn">Next</button>
+                <!--modal page-->
+                <div class="modal fade" name="pinModal" id="pinModal" role="dialog">
+                    <div class="modal-dialog">
+
+                        <!-- Modal content-->
+                        <div class="modal-content" style="width:70%; margin-left:16%;">
+                            <div class="modal-header">
+                                <h3 class="modal-title">PIN</h3>
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="form-group">
+                                    <input type="password" class="form-control text-center" pattern="[0-9]{4}" name="pin"
+                                        id="pin" maxlength="4" required>
+                                    <button type="submit" class="btn btn-success btn-md " style="margin-left:43%; margin-top:5%; margin-bottom:-5%;"
+                                        id="okBtn">OK</button>
+                                </div>
+
+            </form>
+
+        </div>
+
+
+    </div>
+
+
+
+</body>
+
+</html>

@@ -1,0 +1,196 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <title>Receipt</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+
+    <style>
+        body{
+            margin-top: 5rem;
+            background-color: rgb(172, 170, 169);
+
+        }
+
+        h1{
+            text-align: center;
+            color:green;
+        }   
+
+        #tranID{
+            font-size: 12px;
+            text-align: center;
+        }
+
+        #trantype{
+            text-align: center;
+            margin-top:20px;
+        }
+        
+        .back{
+            width: 50px;
+            height: 30px;
+            background-image: url("leftArrow2.png");
+            background-size: 50px 30px;
+        }
+        
+        .account{
+          width:100px;
+          height:100px;
+          background-color:white;
+          
+        }
+
+
+        .receipt{
+          width:550px;
+          height:425px;
+          background-color:white;
+          margin-left: 475px;
+          margin-top: 50px;
+          border-radius: 3%;
+        }
+
+        #acc1{
+          border-radius: 100%;
+          border: 1px solid green;
+          margin-left: 75px;
+          position:absolute;
+        }
+
+        #acc2{
+          border-radius: 100%;
+          border: 1px solid green;
+          margin-left: 375px;
+          position:absolute;
+
+        }
+
+        div.rightArrow2{
+          width: 75px;
+          height: 50px;
+          background-image: url("{% static 'rightArrow2.png' %}");
+          background-size: 75px 50px;
+          margin-left: 235px;
+          margin-top: 70px;
+          position:absolute;
+        }
+
+        #doneBtn{
+          margin-left: 720px;
+          margin-top: 25px;
+          position: absolute;
+        }
+
+        .insertIMG{
+            margin-top: 28px;
+            margin-left: 18px;
+        }
+
+        p{
+            font-family:'Lucida Sans Unicode';
+            font-size: 12px;
+            text-align: center;
+            margin-bottom: 6px;
+        }
+
+        #accNO{
+            margin-top: 50px;
+        }
+
+        #textAmount{
+            margin-top:200px;
+            text-align: center;
+        }
+
+        #name{
+           
+            width: 100%;
+            overflow:hidden;
+            white-space: nowrap;
+            text-overflow:ellipsis;
+        }
+
+        #textUser{
+            margin-top:50px;
+        }
+    </style>
+
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-sm bg-dark navbar-dark fixed-top ">
+        <a class="navbar-brand" href="\">
+            <img src="{% static 'ceBank.png' %}" alt="logo" style="width:45px;">
+        </a>
+        <ul class="navbar-nav ">
+                <li class="nav-item">
+                        <a class="nav-link" href="\bankaccount\{{bankaccount_id}}\deposit">Deposit</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="\bankaccount\{{bankaccount_id}}\withdraw">Withdraw</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link " href="\bankaccount\{{bankaccount_id}}\favorite">Transfer</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="\bankaccount\{{bankaccount_id}}\history">Transaction
+                            history</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link " href="\account" style="margin-left:895px">Account</a>
+                    </li>
+        </ul>
+        <a href="\logout" class="btn btn-outline-success btn-md ml-auto " id="okBtn">LOG OUT</a>
+    </nav>
+
+
+    <div class="container-fluid">
+        <h1>Receipt</h1>
+        <div class="receipt">
+            <br>
+            <p style="font-size: 16px;">Transcation number</p>
+            <p id="tranID">{{ transactionlog.number }}</p>
+            <p id="trantype">{{ transactionlog.transactiontype}}</p>
+            <div class="account" id="acc1">
+                <div class="insertIMG"> <img src="{% static 'account.png' %}" width="65" height="45"></div>
+                {% if transactionlog.frombankaccount %}
+                <p id="accNO">No {{ transactionlog.frombankaccount.number }}</p>
+                <p id="name"> {{ transactionlog.frombankaccount.firstname }} {{ transactionlog.frombankaccount.surname }}</p>
+                {% else %}
+                <p id="textUser">None</p>
+                {% endif %}
+                
+            </div>
+            <div class="rightArrow2"></div>
+            <div class="account" id="acc2">
+                <div class="insertIMG"> <img src="{% static 'account.png' %}" width="65" height="45"></div>
+                {% if transactionlog.tobankaccount %}
+                <p id="accNO">No {{ transactionlog.tobankaccount.number }}</p>
+                <p id="name"> {{ transactionlog.tobankaccount.firstname }} {{ transactionlog.tobankaccount.surname }}</p>
+                {% else %}
+                <p id="textUser">None</p>
+                {% endif %}
+            </div>
+            <p id="textAmount">Amount</p>
+            <p id="amount"> {{ transactionlog.amount }} THB</p>
+            <br>
+            <p id="datetime">{{ transactionlog.datetime }}</p>
+           
+        </div>
+        <a href="\bankaccount\{{bankaccount_id}}\" class="btn btn-success btn-md " id="doneBtn">Done</a>
+    </div>
+
+
+
+
+</body>
+
+</html>
