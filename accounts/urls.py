@@ -11,8 +11,11 @@ urlpatterns = [
 
     path('createbankaccount/', views.BankAccountCreate.as_view(), name='createbankaccount'),
 
-    path('',include('django.contrib.auth.urls'))
+    #path('',include('django.contrib.auth.urls')),
 
+    path('detail/', views.AccDetail, name='acc-detail'),
+
+    path('password/', views.change_password, name='change_password'),
     
     #/accounts/<user_id>/
     #path('<int:user_id>/', views.detail, name='user-detail'),

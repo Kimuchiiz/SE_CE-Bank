@@ -9,6 +9,10 @@ from django.views.generic import View
 from .forms import UserForm,LoginForm
 from .models import BankAccount
 from django.core.exceptions import ObjectDoesNotExist
+from django.contrib.auth.decorators import login_required
+from django.contrib import messages
+from django.contrib.auth import update_session_auth_hash
+from django.contrib.auth.forms import PasswordChangeForm
 
 # Create your models here.
 
@@ -90,3 +94,25 @@ class BankAccountCreate(CreateView):
 
         return redirect('bank:bankacc-detail',bankaccount.id)
 
+
+@login_required
+def AccDetail(request):
+        template_name = 'accounts/accdetail.html'
+        return render(request,template_name,{'account':request.user})
+
+@login_required
+def change_password(request):
+    if request.method == 'POST':
+        form = PasswordChangeForm(request.user, request.POST)
+        if form.is_valid():
+            user = form.save()
+            update_session_auth_hash(request, user)  # Important!
+            messages.success(request, 'Your password was successfully updated!')
+            return redirect('accounts:acc-detail')
+        else:
+            messages.error(request, 'Please correct the error below.')
+    else:
+        form = PasswordChangeForm(request.user)
+    return render(request, 'accounts/change_password.html', {
+        'form': form
+    })
